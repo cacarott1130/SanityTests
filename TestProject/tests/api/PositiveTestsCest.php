@@ -1,30 +1,21 @@
 <?php
 use Codeception\Util\HttpCode;
 
-class FirstApiTestCest{
-    public function userAuth()
-    {
-        $Auth = require('src\Clases\Users.php');
-        return $Auth;
-    }
+class PositiveTestsCest{
+
+public function methodCall (){
+    $methods = include_once('src\Methods\Functions.php');
+    return $methods;
+}
 
 
     // tests
     public function verifyValidTransaction(ApiTester $I)
     {
-        $I->haveHttpHeader($this->userAuth()['ValidAuth']['Basic'], $this->userAuth()['ValidAuth']['BasicValue']);
-        $I->sendPOST("/payment_transactions",
-            ["payment_transaction" => [
-                "card_number" => "4200000000000000",
-                "cvv" => "123",
-                "expiration_date" => "06/2019",
-                "amount" => "500",
-                "usage" => "Coffeemaker",
-                "transaction_type" => "sale",
-                "card_holder" => "Panda Panda",
-                "email" => "panda@example.com",
-                "address" => "Panda Street, China"]]
-        );
+        $I->amGoingTo("Send a valid transaction");
+        $this->methodCall().\Methods\data::Authentication($I, "ValidAuth");
+
+        $this->methodCall().\Methods\data::paymentTransactions($I, "validCard", "validCVV", "validAmount");
 
         $I->seeResponseMatchesJsonType([
             "unique_id" => "string",
@@ -33,6 +24,7 @@ class FirstApiTestCest{
             "amount" => "integer",
             "transaction_time" => "string:date ",
             "message" => "string"]);
+
         $I->seeResponseContains("Your transaction has been approved.");
 
         $I->seeResponseCodeIs(200);
@@ -46,7 +38,8 @@ class FirstApiTestCest{
 
     public function verifyVoidTransaction(ApiTester $I)
     {
-        $I->haveHttpHeader($this->userAuth()['ValidAuth']['Basic'], $this->userAuth()['ValidAuth']['BasicValue']);
+        $I->amGoingTo("Void a valid transaction");
+        $this->methodCall().\Methods\data::Authentication($I, "ValidAuth");
         $I->sendPOST("/payment_transactions",
             ["payment_transaction" => [
                 "reference_id" => $this->verifyValidTransaction($I)[0], "transaction_type" => "void"
@@ -58,6 +51,5 @@ class FirstApiTestCest{
 
         $I->seeResponseContains("voided successfully");
     }
-
 
 }

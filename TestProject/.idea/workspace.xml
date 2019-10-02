@@ -4,7 +4,15 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e300d66b-5b61-45b1-8b85-cfa47c806fcf" name="Default Changelist" comment="" />
+    <list default="true" id="e300d66b-5b61-45b1-8b85-cfa47c806fcf" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Clases/RequestData.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Methods/Functions.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/NegativeTestsCest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Clases/Users.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Clases/Users.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/api/FirstApiTestCest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/PositiveTestsCest.php" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +27,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.3">
     <include_path>
       <path value="$USER_HOME$/vendor/bin" />
@@ -27,9 +41,10 @@
   <component name="ProjectId" id="1RYu7LwMTA9HPnEJNykMkGKRd1v" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/tests/api/PositiveTestsCest.php" />
+    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -43,11 +58,27 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Codeception.API">
     <configuration name="API" type="CodeceptionConfigurationType" factoryName="Codeception">
       <PhpTestRunnerSettings directory="$PROJECT_DIR$/tests" method="" selected_type="All" options="api --steps" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="CodeceptionConfigurationType" factoryName="Codeception">
+      <PhpTestRunnerSettings directory="$PROJECT_DIR$/tests/api" method="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="PositiveTestsCest.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/tests/api/PositiveTestsCest.php">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Codeception.API" />
+      <item itemvalue="PHP Script.PositiveTestsCest.php" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="PHP Script.PositiveTestsCest.php" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -62,6 +93,8 @@
       <workItem from="1569856185253" duration="1483000" />
       <workItem from="1569857772915" duration="15718000" />
       <workItem from="1569912389102" duration="3220000" />
+      <workItem from="1569917145289" duration="13012000" />
+      <workItem from="1569933049589" duration="21871000" />
     </task>
     <servers />
   </component>
@@ -73,13 +106,15 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/TestProject$API.xml" NAME="API Coverage Results" MODIFIED="1569913788099" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/TestProject$API.xml" NAME="API Coverage Results" MODIFIED="1570027392873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
