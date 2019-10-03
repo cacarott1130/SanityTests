@@ -1,48 +1,117 @@
 <?php
+
 use Codeception\Util\HttpCode;
+use Methods\data;
+require_once "PositiveTestsCest.php";
+include_once('src\Methods\Functions.php');
 
 class NegativeTestsCest
 {
-    public function testData($type)
-    {
-        $auth = require('src\Clases\Users.php');
-        $data = require('src\Clases\RequestData.php');
 
-        if($type == 'auth'){
-            return $auth;
-        }
-        if($type == 'data') {
-            return $data;
-        }
-    }
-
-    public function verifyValidTransWrongAuth(ApiTester $I)
+    public function verifyTransactionWrongAuth(ApiTester $I)
     {
-        $I->haveHttpHeader($this->testData('auth')['InvalidAuth']['Basic'], $this->testData('auth')['InvalidAuth']['BasicValue']);
-        $I->sendPOST("/payment_transactions",
-            ["payment_transaction" => [
-                "card_number" => "4200000000000000",
-                "cvv" => "123",
-                "expiration_date" => "06/2019",
-                "amount" => "500",
-                "usage" => "Coffeemaker",
-                "transaction_type" => "sale",
-                "card_holder" => "Panda Panda",
-                "email" => "panda@example.com",
-                "address" => "Panda Street, China"]]);
+        $I->amGoingTo("Send a transaction with an incorrect authentication");
+
+        data::Authentication($I, "invalidAuth");
+
+        data::validPaymentTransactions($I, "validCard", 'validCVV', "validAmount");
 
         $I->seeResponseCodeIs(401);
 
         $I->seeResponseContains("Access denied");
     }
 
+    public function verifyTransactionNoAuth(ApiTester $I)
+    {
+        $I->amGoingTo("Send a transaction with no authentication");
+
+        data::Authentication($I, "noAuth");
+
+        data::validPaymentTransactions($I, "validCard", 'validCVV', "validAmount");
+
+        $I->seeResponseCodeIs(500);
+
+        $I->seeResponseContains("Internal Server Error");
+    }
+
+    public function verifyTransactionNoAuthHeader(ApiTester $I)
+    {
+        $I->amGoingTo("Send a transaction with no authentication header");
+
+        data::validPaymentTransactions($I, "validCard", 'validCVV', "validAmount");
+
+        $I->seeResponseCodeIs(401);
+
+        $I->seeResponseContains("Access denied");
+    }
+
+    public function verifyTransactionNoBody(ApiTester $I)
+    {
+        $I->amGoingTo("Send a transaction with no body");
+
+        data::Authentication($I, "validAuth");
+
+        $I->sendPOST("/payment_transactions");
+
+        $I->seeResponseCodeIs(400);
+
+        $I->seeResponseContains("Bad Request");
+    }
+
+
+
+    public function verifyTransactionWrongCard(ApiTester $I)
+    {
+        $I->amGoingTo("Send a transaction with an incorrect card number");
+
+        data::Authentication($I, "validAuth");
+
+        data::validPaymentTransactions($I, "invalidCard", "validCVV", "validAmount");
+
+        $I->seeResponseCodeIs(200);
+
+        $I->seeResponseContains("Your transaction has been declined");
+    }
+
+
+    public function verifyTransactionWrongCVV(ApiTester $I)
+    {
+        $I->amGoingTo("Send a transaction with an incorrect CVV number");
+
+        data::Authentication($I, "validAuth");
+
+        data::validPaymentTransactions($I, "validCard", "invalidCVV", "validAmount");
+
+        $I->seeResponseCodeIs(422);
+
+        $I->seeResponseIsJson();
+
+        $I->seeResponseContainsJson(array("cvv" => ["is invalid"]));
+    }
+
+    public function verifyTransactionWrongAmount(ApiTester $I)
+    {
+        $I->amGoingTo("Send a transaction with an incorrect amount");
+
+        data::Authentication($I, "validAuth");
+
+        data::validPaymentTransactions($I, "validCard", "validCVV", "invalidAmount");
+
+        $I->seeResponseCodeIs(422);
+
+        $I->seeResponseIsJson();
+
+        $I->seeResponseContainsJson(array("amount" => ["must be greater than 0"]));
+
+    }
+
     public function verifyVoidInvalidTransaction(ApiTester $I)
     {
-        $I->haveHttpHeader($this->testData('auth')['ValidAuth']['Basic'], $this->testData('auth')['ValidAuth']['BasicValue']);
-        $I->sendPOST("/payment_transactions",
-            ["payment_transaction" => [
-                "reference_id" => '2426fd1bfb8test7e049a9cedea4e91', "transaction_type" => "void"
-            ]]);
+        $I->amGoingTo("Void a transaction with an incorrect RefID");
+
+        data::Authentication($I, "validAuth");
+
+        data::voidPaymentTransactions($I, "2426fd1bfb8test7e049a9cedea4e91");
 
         $I->seeResponseCodeIs(422);
 
@@ -50,25 +119,4 @@ class NegativeTestsCest
 
         $I->seeResponseContains("Invalid reference transaction");
     }
-
-    public function verifyValidTransWrongCard(ApiTester $I)
-    {
-        $I->haveHttpHeader($this->testData('auth')['ValidAuth']['Basic'], $this->testData('auth')['ValidAuth']['BasicValue']);
-        $I->sendPOST("/payment_transactions",
-            ["payment_transaction" => [
-                "card_number" => $this->testData('data')["Cards"]['invalidCard'],
-                "cvv" => "123",
-                "expiration_date" => "06/2019",
-                "amount" => "500",
-                "usage" => "Coffeemaker",
-                "transaction_type" => "sale",
-                "card_holder" => "Panda Panda",
-                "email" => "panda@example.com",
-                "address" => "Panda Street, China"]]);
-
-        $I->seeResponseCodeIs(200);
-
-        $I->seeResponseContains("Your transaction has been declined");
-    }
-
 }

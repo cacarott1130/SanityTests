@@ -1,15 +1,15 @@
 <?php
 
 return array(
-    "ValidAuth" => [
+    "validAuth" => [
         'Basic' => "Authorization",
         'BasicValue' => 'Basic cGFuZGFoYXB2YTprYWNoYW1haw=='],
 
-    "InvalidAuth" => [
+    "invalidAuth" => [
         'Basic' => "Authorization",
         'BasicValue' => 'Basic CGFuZGFoYXB2YTprYWNoYW1haw=='],
 
-    "NoAuth" => [
+    "noAuth" => [
         'Basic' => "Authorization",
         'BasicValue' => 'Basic '
     ]

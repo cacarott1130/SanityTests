@@ -25,7 +25,7 @@ class data
 
 
 
-    public static function paymentTransactions($I, $Card, $CVV, $Amount)
+    public static function validPaymentTransactions($I, $Card, $CVV, $Amount)
     {
         $I->sendPOST("/payment_transactions",
             ["payment_transaction" => [
@@ -41,4 +41,12 @@ class data
         );
 
     }
+
+    public static function voidPaymentTransactions($I, $RefID){
+        $I->sendPOST("/payment_transactions",
+            ["payment_transaction" => [
+                "reference_id" => $RefID, "transaction_type" => "void"
+            ]]);
+    }
+
 }

@@ -1,21 +1,20 @@
 <?php
+
 use Codeception\Util\HttpCode;
+use Methods\data;
 
-class PositiveTestsCest{
-
-public function methodCall (){
-    $methods = include_once('src\Methods\Functions.php');
-    return $methods;
-}
-
+class PositiveTestsCest
+{
+    public $unique_id;
 
     // tests
     public function verifyValidTransaction(ApiTester $I)
     {
         $I->amGoingTo("Send a valid transaction");
-        $this->methodCall().\Methods\data::Authentication($I, "ValidAuth");
 
-        $this->methodCall().\Methods\data::paymentTransactions($I, "validCard", "validCVV", "validAmount");
+        data::Authentication($I, "validAuth");
+
+        data::validPaymentTransactions($I, "validCard", "validCVV", "validAmount");
 
         $I->seeResponseMatchesJsonType([
             "unique_id" => "string",
@@ -39,11 +38,10 @@ public function methodCall (){
     public function verifyVoidTransaction(ApiTester $I)
     {
         $I->amGoingTo("Void a valid transaction");
-        $this->methodCall().\Methods\data::Authentication($I, "ValidAuth");
-        $I->sendPOST("/payment_transactions",
-            ["payment_transaction" => [
-                "reference_id" => $this->verifyValidTransaction($I)[0], "transaction_type" => "void"
-            ]]);
+
+        data::Authentication($I, "validAuth");
+
+        data::voidPaymentTransactions($I, $this->verifyValidTransaction($I)[0]);
 
         $I->seeResponseCodeIs(200);
 
